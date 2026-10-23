@@ -1,4 +1,5 @@
 import { Database } from "bun:sqlite";
+import { fromMicros, toMicros } from "./money.ts";
 import type { Address, Check, Mandate, Payment, PaymentFilter, PaymentStatus, Verdict } from "./types.ts";
 
 const SCHEMA = `
@@ -44,8 +45,6 @@ CREATE INDEX IF NOT EXISTS payments_mandate_recipient ON payments(mandate_id, re
 const SPENDING: PaymentStatus[] = ["settled", "pending_approval"];
 const ATTEMPTED: PaymentStatus[] = ["settled", "pending_approval", "failed"];
 
-export const toMicros = (usdc: number) => Math.round(usdc * 1_000_000);
-export const fromMicros = (micros: number) => micros / 1_000_000;
 
 interface MandateRow {
   id: string;
